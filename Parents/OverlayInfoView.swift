@@ -13,6 +13,7 @@ class OverlayInfoView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .center
         imageView.image = UIImage(named: "eye-white")
+        imageView.isHidden = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -78,6 +79,15 @@ class OverlayInfoView: UIView {
         return view
     }()
     
+    var heightConstraintConstant: CGFloat {
+        switch UIDevice.current.screenType {
+        case .iPhoneX_XS, .iPhoneXR, .iPhoneXS_MAX:
+            return 60
+        default:
+            return 50
+        }
+    }
+    
     var didSelectedDownloadButton: ((_ sender: UIButton) -> Void)?
     
     override init(frame: CGRect) {
@@ -90,6 +100,7 @@ class OverlayInfoView: UIView {
             setView(view: totalViewsView, hidden: true)
             return
         }
+        eyeImageView.isHidden = false
         setView(view: totalViewsView, hidden: false)
         totalViewsLabel.text = text
     }
@@ -124,19 +135,13 @@ class OverlayInfoView: UIView {
         stackView.axis = .horizontal
         stackView.spacing = 40
         
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        heightAnchor.constraint(equalToConstant: heightConstraintConstant).isActive = true
         addSubview(stackView)
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: Constraints.padding3x).isActive = true
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.padding).isActive = true
         stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.padding).isActive = true
         let stackViewWidthAnchorConstants: CGFloat = (CGFloat(stackView.arrangedSubviews.count) * 60) + (CGFloat(stackView.arrangedSubviews.count) * stackView.spacing)
         stackView.widthAnchor.constraint(equalToConstant: stackViewWidthAnchorConstants)
-        
-//        addSubview(totalViewsView)
-//        totalViewsView.leftAnchor.constraint(equalTo: leftAnchor, constant: Constraints.padding3x).isActive = true
-//        totalViewsView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.padding).isActive = true
-//        totalViewsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.padding).isActive = true
-        totalViewsView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
         totalViewsView.addSubview(eyeImageView)
         eyeImageView.topAnchor.constraint(equalTo: totalViewsView.topAnchor).isActive = true
@@ -148,12 +153,7 @@ class OverlayInfoView: UIView {
         totalViewsLabel.topAnchor.constraint(equalTo: totalViewsView.topAnchor, constant: Constraints.padding).isActive = true
         totalViewsLabel.leftAnchor.constraint(equalTo: eyeImageView.rightAnchor, constant: 2).isActive = true
         totalViewsLabel.bottomAnchor.constraint(equalTo: totalViewsView.bottomAnchor, constant: -Constraints.padding).isActive = true
-        
-//        addSubview(totalLikesView)
-//        totalLikesView.leftAnchor.constraint(equalTo: totalViewsView.rightAnchor, constant: 40).isActive = true
-//        totalLikesView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.padding).isActive = true
-//        totalLikesView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.padding).isActive = true
-        totalLikesView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        totalViewsLabel.rightAnchor.constraint(equalTo: totalViewsView.rightAnchor).isActive = true
         
         totalLikesView.addSubview(likesImageView)
         likesImageView.topAnchor.constraint(equalTo: totalLikesView.topAnchor).isActive = true
@@ -164,13 +164,8 @@ class OverlayInfoView: UIView {
         totalLikesView.addSubview(totalLikesLabel)
         totalLikesLabel.topAnchor.constraint(equalTo: totalViewsView.topAnchor, constant: Constraints.padding).isActive = true
         totalLikesLabel.leftAnchor.constraint(equalTo: likesImageView.rightAnchor, constant: 2).isActive = true
-        totalLikesLabel.bottomAnchor.constraint(equalTo: totalViewsView.bottomAnchor, constant: -Constraints.padding).isActive = true
-        
-//        addSubview(totalDownloadsView)
-//        totalDownloadsView.leftAnchor.constraint(equalTo: totalLikesView.rightAnchor, constant: 40).isActive = true
-//        totalDownloadsView.topAnchor.constraint(equalTo: topAnchor, constant: Constraints.padding).isActive = true
-//        totalDownloadsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constraints.padding).isActive = true
-        totalDownloadsView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        totalLikesLabel.bottomAnchor.constraint(equalTo: likesImageView.bottomAnchor, constant: -Constraints.padding).isActive = true
+        totalLikesLabel.rightAnchor.constraint(equalTo: totalLikesView.rightAnchor).isActive = true
         
         totalDownloadsView.addSubview(downloadsButton)
         downloadsButton.topAnchor.constraint(equalTo: totalDownloadsView.topAnchor).isActive = true
@@ -182,7 +177,7 @@ class OverlayInfoView: UIView {
         totalDownloadsLabel.topAnchor.constraint(equalTo: totalDownloadsView.topAnchor, constant: Constraints.padding).isActive = true
         totalDownloadsLabel.leftAnchor.constraint(equalTo: downloadsButton.rightAnchor, constant: 2).isActive = true
         totalDownloadsLabel.bottomAnchor.constraint(equalTo: totalDownloadsView.bottomAnchor, constant: -Constraints.padding).isActive = true
-        
+        totalDownloadsLabel.rightAnchor.constraint(equalTo: totalDownloadsView.rightAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
