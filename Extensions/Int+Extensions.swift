@@ -28,4 +28,14 @@ extension Int {
         n = Double( floor(n/100000)/10 )
         return "\(n.description)M"
     }
+    
+    private static var commaFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
+    internal var commaRepresentation: String {
+        return Int.commaFormatter.string(from: NSNumber(value: self)) ?? ""
+    }
 }
